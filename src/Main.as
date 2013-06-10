@@ -1,5 +1,7 @@
 package
 {
+	import com.adobe.nativeExtensions.Gyroscope;
+	import com.adobe.nativeExtensions.GyroscopeEvent;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -28,6 +30,7 @@ package
 		private var twSprite:Sprite=new Sprite();
 		private var inSprite:Sprite=new Sprite();
 		private var nwSprite:Sprite=new Sprite();
+		private var gyro:Gyroscope;
 		public function Main()
 		{
 			super();
@@ -38,34 +41,66 @@ package
 		
 		protected function initHD(e:Event):void
 		{
-			stage.addEventListener(MouseEvent.CLICK, clickHd);
+			
 			bgBMP=new Imgbg();
 			seeBMP=new TextSee();
 			seeSprite.addChild(seeBMP);
-			seeSprite.x=58;
-			seeSprite.y=95;
+			
 			twBMP=new TextTW();
 			twSprite.addChild(twBMP);
-			twSprite.x=65;
-			twSprite.y=286;
+			
 			inBMP=new TextIn();
 			inSprite.addChild(inBMP);
-			inSprite.x=58;
-			inSprite.y=639;
+			
 			nwBMP=new TextNW();
 			nwSprite.addChild(nwBMP);
+			
+			resetState();
+			
+			stage.addEventListener(MouseEvent.CLICK, clickHd);	
+		}
+		
+		protected function clickHd(e:MouseEvent):void
+		{
+			resetState();
+			if(Gyroscope.isSupported){
+				if(!gyro){
+					gyro=new Gyroscope();
+					gyro.setRequestedUpdateInterval(20);
+				}
+				if(!gyro.hasEventListener(GyroscopeEvent.UPDATE))
+				gyro.addEventListener(GyroscopeEvent.UPDATE,onChange);
+			}else{
+				trace("Gyroscope is not supported.");
+			}
+		}
+		
+		protected function onChange(e:GyroscopeEvent):void
+		{
+			trace("From gyro: " + e.x + " " + e.y + " " + " " + e.z);
+			seeSprite.x+=e.y*4;
+			seeSprite.y+=e.x*4;
+			inSprite.x+=e.y*4;
+			inSprite.y+=e.x*4;
+			twSprite.x+=e.y*2;
+			twSprite.y+=e.x*2;
+			nwSprite.x+=e.y*2;
+			nwSprite.y+=e.x*2;
+		}
+		private function resetState():void{
+			seeSprite.x=58;
+			seeSprite.y=75;
+			twSprite.x=65;
+			twSprite.y=266;
+			inSprite.x=58;
+			inSprite.y=629;
 			nwSprite.x=65;
-			nwSprite.y=820;
+			nwSprite.y=810;
 			addChild(bgBMP);
 			addChild(seeSprite);
 			addChild(twSprite);
 			addChild(inSprite);
 			addChild(nwSprite);
-		}
-		
-		protected function clickHd(e:MouseEvent):void
-		{
-			
 		}
 	}
 }
