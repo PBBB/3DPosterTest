@@ -11,7 +11,7 @@ package
 	
 	public class Main extends Sprite
 	{
-		[Embed(source="img/bg.png")]
+		[Embed(source="img/bg.jpg")]
 		private var Imgbg:Class;
 		[Embed(source="img/in.png")]
 		private var TextIn:Class;
@@ -26,6 +26,7 @@ package
 		private var twBMP:Bitmap;
 		private var inBMP:Bitmap;
 		private var nwBMP:Bitmap;
+		private var bgSprite:Sprite=new Sprite();
 		private var seeSprite:Sprite=new Sprite();
 		private var twSprite:Sprite=new Sprite();
 		private var inSprite:Sprite=new Sprite();
@@ -43,6 +44,8 @@ package
 		{
 			
 			bgBMP=new Imgbg();
+			bgSprite.addChild(bgBMP);
+			
 			seeBMP=new TextSee();
 			seeSprite.addChild(seeBMP);
 			
@@ -66,7 +69,7 @@ package
 			if(Gyroscope.isSupported){
 				if(!gyro){
 					gyro=new Gyroscope();
-					gyro.setRequestedUpdateInterval(20);
+					gyro.setRequestedUpdateInterval(10);
 				}
 				if(!gyro.hasEventListener(GyroscopeEvent.UPDATE))
 				gyro.addEventListener(GyroscopeEvent.UPDATE,onChange);
@@ -78,16 +81,20 @@ package
 		protected function onChange(e:GyroscopeEvent):void
 		{
 			trace("From gyro: " + e.x + " " + e.y + " " + " " + e.z);
-			seeSprite.x+=e.y*4;
-			seeSprite.y+=e.x*4;
-			inSprite.x+=e.y*4;
-			inSprite.y+=e.x*4;
-			twSprite.x+=e.y*2;
-			twSprite.y+=e.x*2;
-			nwSprite.x+=e.y*2;
-			nwSprite.y+=e.x*2;
+			bgSprite.x-=e.y*2;
+			bgSprite.y-=e.x*2;
+			seeSprite.x+=e.y*2;
+			seeSprite.y+=e.x*2;
+			inSprite.x+=e.y*2;
+			inSprite.y+=e.x*2;
+			twSprite.x+=e.y*1;
+			twSprite.y+=e.x*1;
+			nwSprite.x+=e.y*1;
+			nwSprite.y+=e.x*1;
 		}
 		private function resetState():void{
+			bgSprite.x=-180;
+			bgSprite.y=-120;
 			seeSprite.x=0;
 			seeSprite.y=18;
 			twSprite.x=65;
@@ -96,7 +103,7 @@ package
 			inSprite.y=524;
 			nwSprite.x=65;
 			nwSprite.y=808;
-			addChild(bgBMP);
+			addChild(bgSprite);
 			addChild(twSprite);
 			addChild(nwSprite);
 			addChild(seeSprite);
