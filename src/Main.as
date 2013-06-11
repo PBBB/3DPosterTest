@@ -88,19 +88,20 @@ package
 			nwSprite.y+=e.x*2;
 		}
 		private function resetState():void{
-			seeSprite.x=58;
-			seeSprite.y=75;
+			seeSprite.x=0;
+			seeSprite.y=18;
 			twSprite.x=65;
-			twSprite.y=266;
-			inSprite.x=58;
-			inSprite.y=629;
+			twSprite.y=310;
+			inSprite.x=0;
+			inSprite.y=524;
 			nwSprite.x=65;
-			nwSprite.y=810;
+			nwSprite.y=808;
 			addChild(bgBMP);
-			addChild(seeSprite);
 			addChild(twSprite);
-			addChild(inSprite);
 			addChild(nwSprite);
+			addChild(seeSprite);
+			addChild(inSprite);
+			
 		}
 	}
 }
